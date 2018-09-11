@@ -67,13 +67,19 @@ public class MaxilectRestServicePositiveTest {
 
     @Test(priority = 4)
     public void checkGetByID(){
-        given()
+        String responce = given()
             .when()
             .get(BASE_URL+"/rs/users/" + personId)
             .then().log().all()//ifError()
             .statusCode(200)
             .assertThat().header("userId", personId)
-            .assertThat().header("Content-Length", Integer::parseInt, greaterThan(0));
+            .assertThat().header("Content-Length", Integer::parseInt, greaterThan(0))
+            .extract().body().asString();
+
+        Matcher matcher = Pattern.compile("(ID=)(\\d*)(,)\\s(FIRSTNAME=)(\\w*)(,)\\s(LASTNAME=)(\\w*)").matcher(responce);
+        matcher.find();
+        assertEquals(matcher.group(5), "Orlando");
+        assertEquals(matcher.group(8), "Bloom");
     }
 
 
