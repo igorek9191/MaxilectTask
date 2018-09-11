@@ -34,9 +34,11 @@ public class MaxilectRestServicePositiveTest {
             .assertThat().header(LAST_NAME, USER_LAST_NAME)
             .extract().body().asString();
 
-        Matcher matcher = Pattern.compile("(ID=)(\\d*)(,)").matcher(responce);
+        Matcher matcher = Pattern.compile("(ID=)(\\d*)(,)\\s(FIRSTNAME=)(\\w*)(,)\\s(LASTNAME=)(\\w*)").matcher(responce);
         matcher.find();
         personId = matcher.group(2);
+        assertEquals(matcher.group(5), USER_NAME);
+        assertEquals(matcher.group(8), USER_LAST_NAME);
     }
 
     @Test(priority = 2)
